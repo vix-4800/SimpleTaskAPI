@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,9 +20,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->enum('status', [
-                'todo',
-                'in_progress',
-                'completed',
+                Task::STATUS_TODO,
+                Task::STATUS_IN_PROGRESS,
+                Task::STATUS_COMPLETED,
             ])->default('todo');
             $table->date('due_date')->nullable();
 
