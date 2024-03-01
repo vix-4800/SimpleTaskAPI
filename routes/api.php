@@ -19,5 +19,10 @@ Route::prefix('v1')
         Route::apiResource('tasks', TaskController::class);
     });
 
-// middleware('auth:sanctum')
-// ->
+Route::fallback(function () {
+    return response()->json([
+        'status' => 404,
+        'error' => 'Not Found',
+        'message' => 'Unknown URL requested',
+    ], 404);
+});
