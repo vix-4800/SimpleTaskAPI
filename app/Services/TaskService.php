@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class TaskService
 {
+    public function getFilteredTasks(Request $request)
+    {
+        return Task::query()
+            ->when($request->input('status'), fn ($query) => $query->where('status', $request->input('status')))
+            ->when($request->input('date'), fn ($query) => $query->where('due_date', $request->input('date')))
+            ->get();
+    }
+
     public function createNewTask(Request $request)
     {
         $validatedData = $request->validated();

@@ -21,9 +21,11 @@ class TaskController extends Controller
             ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return TaskResource::collection(Task::all());
+        return TaskResource::collection($this->service->getFilteredTasks($request))
+            ->response()
+            ->setStatusCode(200);
     }
 
     public function show(Task $task)
