@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +39,41 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        $exceptionData = [
+            ModelNotFoundException::class => [
+                'status' => 404,
+                'error' => 'Not Found',
+                'message' => 'Task not found',
+            ],
+            \TypeError::class => [
+                'status' => 422,
+                'error' => 'Wrong id',
+                'message' => 'Task id must be a valid number',
+            ],
+            NotTaskOwnerException::class => [
+                'status' => 403,
+                'error' => 'Forbidden',
+                'message' => 'You are not allowed to access this task',
+            ],
+            MethodNotAllowedHttpException::class => [
+                'status' => 405,
+                'error' => 'Bad Request',
+                'message' => 'This method is not supported for this route',
+            ],
+        ];
+
+        if ($request->wantsJson() && array_key_exists(get_class($exception), $exceptionData)) {
+            $data = $exceptionData[get_class($exception)];
+
+            return response()
+                ->json($data)
+                ->setStatusCode($data['status']);
+        }
+
+        return parent::render($request, $exception);
     }
 }
