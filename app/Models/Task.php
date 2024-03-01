@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,12 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Task extends Model
 {
     use HasFactory;
-
-    public const STATUS_TODO = 'todo';
-
-    public const STATUS_IN_PROGRESS = 'in_progress';
-
-    public const STATUS_COMPLETED = 'completed';
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +22,10 @@ class Task extends Model
         'description',
         'status',
         'due_date',
+    ];
+
+    protected $casts = [
+        'status' => TaskStatus::class,
     ];
 
     public function user(): BelongsTo

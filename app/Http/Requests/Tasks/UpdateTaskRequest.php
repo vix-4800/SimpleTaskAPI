@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tasks;
 
-use App\Models\Task;
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -29,11 +29,7 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => ['string'],
             'description' => ['string'],
-            'status' => [Rule::in([
-                Task::STATUS_TODO,
-                Task::STATUS_IN_PROGRESS,
-                Task::STATUS_COMPLETED,
-            ])],
+            'status' => [Rule::in(TaskStatus::values())],
             'date' => ['date'],
         ];
     }

@@ -26,13 +26,9 @@ class CreateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
-            'description' => ['required'],
-            'status' => ['required', Rule::in([
-                Task::STATUS_TODO,
-                Task::STATUS_IN_PROGRESS,
-                Task::STATUS_COMPLETED,
-            ])],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'status' => ['required', Rule::in(TaskStatus::values())],
             'date' => ['required', 'date'],
         ];
     }
