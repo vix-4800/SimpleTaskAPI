@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tasks;
 
-use App\Models\Task;
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -30,6 +30,18 @@ class CreateTaskRequest extends FormRequest
             'description' => ['required', 'string'],
             'status' => ['required', Rule::in(TaskStatus::values())],
             'date' => ['required', 'date'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'date.date' => 'Wrong date format',
+            'date.required' => 'Date is format',
+            'title.required' => 'Title is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'status.in' => 'Wrong status',
         ];
     }
 }
