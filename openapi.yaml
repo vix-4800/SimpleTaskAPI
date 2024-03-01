@@ -1,0 +1,700 @@
+openapi: 3.0.0
+
+info:
+  title: Local test API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost/api
+
+paths:
+  /v1/tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Get all tasks
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+          description: Filter by date
+        - name: status
+          in: query
+          schema:
+            type: string
+          description: Filter by status
+      responses:
+        "200":
+          description: OK
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 12:33:08 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 1
+                    user:
+                      id: 16
+                      name: Мария Алексеевна Шашкова
+                      email: milan.zimin@example.net
+                      task_count: 1
+                      registered_at: "2024-03-01"
+                    title: Task title
+                    description: Task description
+                    status: todo
+                    due_date: "1975-12-20"
+                  - id: 2
+                    user:
+                      id: 8
+                      name: Марта Романовна Кулакова
+                      email: davydova.nikodim@example.net
+                      task_count: 1
+                      registered_at: "2024-03-01"
+                    title: Task title
+                    description: Task description
+                    status: completed
+                    due_date: "2008-12-05"
+    post:
+      tags:
+        - Tasks
+      summary: Create new task
+      requestBody:
+        content:
+          application/json:
+            example:
+              title: ""
+              description: ""
+              status: ""
+              date: ""
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 13:37:33 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                data:
+                  id: 16
+                  user:
+                    id: 1
+                    name: Кабанов Ростислав Андреевич
+                    email: kondratev.lusa@example.net
+                    task_count: 3
+                    registered_at: "2024-03-01"
+                  title: New title
+                  description: New description
+                  status: todo
+                  due_date: "2024-03-01"
+        "401":
+          description: Unauthorized
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 07:24:50 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                message: Unauthenticated.
+        "422":
+          description: Unprocessable Content
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 19:53:40 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                message: Title is required (and 3 more errors)
+                errors:
+                  title:
+                    - Title is required
+                  description:
+                    - Description is required
+                  status:
+                    - Status is required
+                  date:
+                    - Date is required
+  /v1/tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Get task
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Task id
+      responses:
+        "200":
+          description: OK
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 12:33:38 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "57"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1
+                  user:
+                    id: 16
+                    name: Мария Алексеевна Шашкова
+                    email: milan.zimin@example.net
+                    task_count: 1
+                    registered_at: "2024-03-01"
+                  title: Task title
+                  description: Task description
+                  status: todo
+                  due_date: "1975-12-20"
+        "404":
+          description: Not Found
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 19:46:17 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                status: 404
+                error: Not Found
+                message: Task not found
+    put:
+      tags:
+        - Tasks
+      summary: Update task
+      requestBody:
+        content:
+          application/json:
+            example:
+              title: ""
+              description: ""
+              status: ""
+              date: ""
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Task id
+      responses:
+        "200":
+          description: OK
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 07:18:10 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                data:
+                  id: 22
+                  user:
+                    id: 1
+                    name: Тихонова Изабелла Александровна
+                    email: ignateva.donat@example.org
+                    post_count: 2
+                    registered_at: "2024-02-29"
+                  title: Updated title
+                  description: New description
+                  status: todo
+                  due_date: "2024-03-01"
+        "401":
+          description: Unauthorized
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 07:25:39 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                message: Unauthenticated.
+        "404":
+          description: Not Found
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 19:48:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                status: 404
+                error: Not Found
+                message: Task not found
+        "422":
+          description: Unprocessable Content
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 19:51:46 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                message: Wrong title format
+                errors:
+                  title:
+                    - Wrong title format
+    delete:
+      tags:
+        - Tasks
+      summary: Delete task
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Task id
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 07:21:32 GMT
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            text/plain:
+              example: null
+        "401":
+          description: Unauthorized
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 07:27:05 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                message: Unauthenticated.
+        "404":
+          description: Not Found
+          headers:
+            Host:
+              schema:
+                type: string
+                example: localhost
+            Connection:
+              schema:
+                type: string
+                example: close
+            X-Powered-By:
+              schema:
+                type: string
+                example: PHP/8.3.3-1+ubuntu22.04.1+deb.sury.org+1
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, private
+            Date:
+              schema:
+                type: string
+                example: Fri, 01 Mar 2024 19:54:17 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "57"
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+          content:
+            application/json:
+              example:
+                status: 404
+                error: Not Found
+                message: Task not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
