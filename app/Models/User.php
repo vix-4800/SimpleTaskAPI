@@ -43,9 +43,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getRegisteredAtAttribute()
+    public function getRegisteredAtAttribute(): string
     {
         return Date::createFromDate($this->created_at)->format('Y-m-d');
+    }
+
+    public function getTaskCountAttribute(): int
+    {
+        return $this->tasks->count();
     }
 
     public function tasks(): HasMany
