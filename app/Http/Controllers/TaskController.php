@@ -23,34 +23,36 @@ class TaskController extends Controller
 
     public function index()
     {
-        return TaskResource::collection(
-            Task::all()
-        );
+        return TaskResource::collection(Task::all());
     }
 
     public function show(Task $task)
     {
-        return new TaskResource($task);
+        return (new TaskResource($task))
+            ->response()
+            ->setStatusCode(200);
     }
 
     public function store(CreateTaskRequest $request)
     {
-        return new TaskResource(
-            $this->service->createNewTask($request)
-        );
+        return (new TaskResource($this->service->createNewTask($request)))
+            ->response()
+            ->setStatusCode(200);
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        return new TaskResource(
-            $this->service->updateTask($request, $task)
-        );
+        return (new TaskResource($this->service->updateTask($request, $task)))
+            ->response()
+            ->setStatusCode(200);
     }
 
     public function destroy(Request $request, Task $task)
     {
         $this->service->deleteTask($request, $task);
 
-        return response()->noContent();
+        return response()
+            ->noContent()
+            ->setStatusCode(204);
     }
 }
