@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotTaskOwnerException;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class TaskService
 {
@@ -14,42 +14,38 @@ class TaskService
 
         return Task::create([
             'user_id' => $request->user()->id,
-            'title' => $validatedData["title"],
-            'description' => $validatedData["description"],
-            'status' => $validatedData["status"],
-            'due_date' => $validatedData["date"],
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+            'due_date' => $validatedData['date'],
         ]);
     }
 
     public function updateTask(Request $request, Task $task)
     {
-        $this->checkOwnership($request->user(), $task, 'You are not allowed to update this task');
+        throw_unless($this->isOwner($request->user(), $task), new NotTaskOwnerException);
 
         $validatedData = $request->validated();
 
-        return $task->update([
-            'title' => $request->filled('title') ? $validatedData["title"] : $task->title,
-            'description' => $request->filled('description') ? $validatedData["description"] : $task->description,
-            'status' => $request->filled('status') ? $validatedData["status"] : $task->status,
-            'due_date' => $request->filled('date') ? $validatedData["date"] : $task->due_date,
+        $task->update([
+            'title' => $request->filled('title') ? $validatedData['title'] : $task->title,
+            'description' => $request->filled('description') ? $validatedData['description'] : $task->description,
+            'status' => $request->filled('status') ? $validatedData['status'] : $task->status,
+            'due_date' => $request->filled('date') ? $validatedData['date'] : $task->due_date,
         ]);
+
+        return $task;
     }
 
     public function deleteTask(Request $request, Task $task)
     {
-        $this->checkOwnership($request->user(), $task, 'You are not allowed to delete this task');
+        throw_unless($this->isOwner($request->user(), $task), new NotTaskOwnerException);
 
         $task->delete();
     }
 
-    private function checkOwnership($user, Task $task, string $errorMessage)
+    private function isOwner($user, Task $task): bool
     {
-        if (!$user->is($task->user)) {
-            return response()->json([
-                'status' => Response::HTTP_FORBIDDEN,
-                'error' => 'Forbidden',
-                'message' => $errorMessage,
-            ]);
-        }
+        return $user->is($task->user);
     }
 }
