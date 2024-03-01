@@ -37,9 +37,11 @@ class CreateTaskRequest extends FormRequest
     {
         return [
             'date.date' => 'Wrong date format',
-            'date.required' => 'Date is format',
+            'date.required' => 'Date is required',
             'title.required' => 'Title is required',
+            'title.string' => 'Wrong title format',
             'description.required' => 'Description is required',
+            'description.string' => 'Wrong description format',
             'status.required' => 'Status is required',
             'status.in' => 'Wrong status',
         ];
