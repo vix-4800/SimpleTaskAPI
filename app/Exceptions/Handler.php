@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -14,9 +15,7 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, class-string<Throwable>>
      */
-    protected $dontReport = [
-        NotTaskOwnerException::class,
-    ];
+    protected $dontReport = [];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -54,15 +53,15 @@ class Handler extends ExceptionHandler
                 'error' => 'Wrong id',
                 'message' => 'Task id must be a valid number',
             ],
-            NotTaskOwnerException::class => [
-                'status' => 403,
-                'error' => 'Forbidden',
-                'message' => 'You are not allowed to access this task',
-            ],
             MethodNotAllowedHttpException::class => [
                 'status' => 405,
                 'error' => 'Bad Request',
                 'message' => 'This method is not supported for this route',
+            ],
+            AuthorizationException::class => [
+                'status' => 403,
+                'error' => 'Forbidden',
+                'message' => 'You are not allowed to access this task',
             ],
         ];
 

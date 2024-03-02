@@ -44,14 +44,18 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         return (new TaskResource($this->service->updateTask($request, $task)))
             ->response()
             ->setStatusCode(200);
     }
 
-    public function destroy(Request $request, Task $task)
+    public function destroy(Task $task)
     {
-        $this->service->deleteTask($request, $task);
+        $this->authorize('delete', $task);
+
+        $task->delete();
 
         return response()
             ->noContent()

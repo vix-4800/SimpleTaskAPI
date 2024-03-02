@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\NotTaskOwnerException;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -31,8 +30,6 @@ class TaskService
 
     public function updateTask(Request $request, Task $task)
     {
-        throw_unless($this->isOwner($request->user(), $task), new NotTaskOwnerException);
-
         $validatedData = $request->validated();
 
         $task->update([
@@ -43,17 +40,5 @@ class TaskService
         ]);
 
         return $task;
-    }
-
-    public function deleteTask(Request $request, Task $task)
-    {
-        throw_unless($this->isOwner($request->user(), $task), new NotTaskOwnerException);
-
-        $task->delete();
-    }
-
-    private function isOwner($user, Task $task): bool
-    {
-        return $user->is($task->user);
     }
 }

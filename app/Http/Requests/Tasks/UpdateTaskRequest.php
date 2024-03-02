@@ -39,7 +39,7 @@ class UpdateTaskRequest extends FormRequest
         return [
             'date.date' => 'Wrong date format',
             'status.in' => 'Wrong status',
-            'title.string'  => 'Wrong title format',
+            'title.string' => 'Wrong title format',
             'description.string' => 'Wrong description format',
         ];
     }
