@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Tasks\CreateTaskRequest;
+use App\Http\Requests\Tasks\GetAllTasksRequest;
 use App\Http\Requests\Tasks\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -28,7 +28,7 @@ class TaskController extends Controller
     /**
      * Display a list of the tasks.
      */
-    public function index(Request $request): JsonResponse
+    public function index(GetAllTasksRequest $request): JsonResponse
     {
         return TaskResource::collection(TaskService::getFilteredTasks($request))
             ->response()

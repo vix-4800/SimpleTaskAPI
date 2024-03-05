@@ -50,8 +50,8 @@ class Handler extends ExceptionHandler
             ],
             \TypeError::class => [
                 'status' => 422,
-                'error' => 'Wrong id',
-                'message' => 'Task id must be a valid number',
+                'error' => 'Wrong parameters',
+                'message' => 'One or more parameters are invalid',
             ],
             MethodNotAllowedHttpException::class => [
                 'status' => 405,

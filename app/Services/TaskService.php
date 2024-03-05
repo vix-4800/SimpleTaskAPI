@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskService
 {
     /**
      * Get filtered tasks
      */
-    public static function getFilteredTasks(Request $request): Collection
+    public static function getFilteredTasks(Request $request): LengthAwarePaginator
     {
+        $limit = (int) $request->input('limit') ?? 5;
+
         return Task::query()
             ->when($request->input('status'), fn ($query) => $query->where('status', $request->input('status')))
             ->when($request->input('date'), fn ($query) => $query->where('due_date', $request->input('date')))
-            ->get();
+            ->paginate($limit);
     }
 
     /**
