@@ -16,9 +16,8 @@ class TaskController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        private TaskService $service
-    ) {
+    public function __construct()
+    {
         $this->middleware('auth:sanctum')
             ->except([
                 'index',
@@ -31,7 +30,7 @@ class TaskController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return TaskResource::collection($this->service->getFilteredTasks($request))
+        return TaskResource::collection(TaskService::getFilteredTasks($request))
             ->response()
             ->setStatusCode(200);
     }
@@ -53,7 +52,7 @@ class TaskController extends Controller
      */
     public function store(CreateTaskRequest $request): JsonResponse
     {
-        return (new TaskResource($this->service->createNewTask($request)))
+        return (new TaskResource(TaskService::createNewTask($request)))
             ->response()
             ->setStatusCode(200);
     }
@@ -67,7 +66,7 @@ class TaskController extends Controller
     {
         $this->authorize('update', $task);
 
-        return (new TaskResource($this->service->updateTask($request, $task)))
+        return (new TaskResource(TaskService::updateTask($request, $task)))
             ->response()
             ->setStatusCode(200);
     }

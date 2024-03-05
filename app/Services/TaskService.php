@@ -11,7 +11,7 @@ class TaskService
     /**
      * Get filtered tasks
      */
-    public function getFilteredTasks(Request $request): Collection
+    public static function getFilteredTasks(Request $request): Collection
     {
         return Task::query()
             ->when($request->input('status'), fn ($query) => $query->where('status', $request->input('status')))
@@ -22,7 +22,7 @@ class TaskService
     /**
      * Create new task
      */
-    public function createNewTask(Request $request): Task
+    public static function createNewTask(Request $request): Task
     {
         $validatedData = $request->validated();
 
@@ -40,7 +40,7 @@ class TaskService
      *
      * @param  Task  $task  Task to update
      */
-    public function updateTask(Request $request, Task $task): Task
+    public static function updateTask(Request $request, Task $task): Task
     {
         $validatedData = $request->validated();
 
