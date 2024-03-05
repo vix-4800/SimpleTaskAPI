@@ -15,7 +15,7 @@ class TaskPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Task $task)
+    public function update(User $user, Task $task): bool
     {
         return $user->is($task->user);
     }
@@ -25,7 +25,7 @@ class TaskPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Task $task)
+    public function delete(User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }

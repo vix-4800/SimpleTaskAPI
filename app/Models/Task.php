@@ -25,19 +25,37 @@ class Task extends Model
         'due_date',
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = [
         'due_date',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'status' => TaskStatus::class,
     ];
 
-    public function getDueDateAttribute($date)
+    /**
+     * Get the due date as a formatted string.
+     *
+     * @param  mixed  $date  The 'due_date' field of the task.
+     */
+    public function getDueDateAttribute($date): string
     {
         return Date::createFromDate($date)->format('Y-m-d');
     }
 
+    /**
+     * Get the user that owns the task.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

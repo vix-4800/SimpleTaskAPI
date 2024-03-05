@@ -23,7 +23,7 @@ class CreateTaskRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => ['required', 'string'],
@@ -33,7 +33,10 @@ class CreateTaskRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * Get the error messages for the defined validation rules.
+     */
+    public function messages(): array
     {
         return [
             'date.date' => 'Wrong date format',

@@ -4,10 +4,14 @@ namespace App\Services;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class TaskService
 {
-    public function getFilteredTasks(Request $request)
+    /**
+     * Get filtered tasks
+     */
+    public function getFilteredTasks(Request $request): Collection
     {
         return Task::query()
             ->when($request->input('status'), fn ($query) => $query->where('status', $request->input('status')))
@@ -15,7 +19,10 @@ class TaskService
             ->get();
     }
 
-    public function createNewTask(Request $request)
+    /**
+     * Create new task
+     */
+    public function createNewTask(Request $request): Task
     {
         $validatedData = $request->validated();
 
@@ -28,7 +35,12 @@ class TaskService
         ]);
     }
 
-    public function updateTask(Request $request, Task $task)
+    /**
+     * Update task
+     *
+     * @param  Task  $task  Task to update
+     */
+    public function updateTask(Request $request, Task $task): Task
     {
         $validatedData = $request->validated();
 

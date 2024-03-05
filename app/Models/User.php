@@ -11,7 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -43,16 +45,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the custom field 'registered_at' as a formatted string.
+     */
     public function getRegisteredAtAttribute(): string
     {
         return Date::createFromDate($this->created_at)->format('Y-m-d');
     }
 
+    /**
+     * Get the custom field 'task_count' as an integer.
+     */
     public function getTaskCountAttribute(): int
     {
         return $this->tasks->count();
     }
 
+    /**
+     * Get the tasks for the user.
+     */
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);

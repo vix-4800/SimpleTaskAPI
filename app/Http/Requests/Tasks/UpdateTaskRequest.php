@@ -23,7 +23,7 @@ class UpdateTaskRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
 
         return [
@@ -34,7 +34,10 @@ class UpdateTaskRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * Get the error messages for the defined validation rules.
+     */
+    public function messages(): array
     {
         return [
             'date.date' => 'Wrong date format',
